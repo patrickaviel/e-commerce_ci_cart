@@ -2,5 +2,6 @@
 E-Commerce
 ###################
 
-Add/Delete to cart.
+Shopping cart website.
+Allows user to add/delete from his cart.
 
