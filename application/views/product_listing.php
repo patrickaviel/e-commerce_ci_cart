@@ -14,7 +14,9 @@
             <tbody>
 <?php       for($i=0;$i<count($products);$i++){     ?>
                 <tr>
-                <form action="/carts/add_to_cart" method="post">
+<?php           $attributes = array('role' => 'form');
+                echo form_open('/carts/add_to_cart',$attributes);                   ?>
+                <!-- <form action="/carts/add_to_cart" method="post"> -->
 
                     <input type="hidden" name="product_id" value="<?=$products[$i]['id']?>">
 

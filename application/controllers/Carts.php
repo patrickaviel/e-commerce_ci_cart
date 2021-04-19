@@ -6,6 +6,7 @@ class Carts extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		//$this->load->helper('security');
 		$this->load->library('cart');
 		//$this->session->userdata('cart');
 		$this->load->model('product_model');
@@ -21,10 +22,10 @@ class Carts extends CI_Controller {
     }
 	public function add_to_cart()
 	{
-		$product_id = $this->input->post('product_id');
-		$product_name = $this->input->post('product');
-		$product_qty = $this->input->post('quantity');
-		$product_price = $this->input->post('price');
+		$product_id = $this->input->post('product_id',TRUE);
+		$product_name = $this->input->post('product',TRUE);
+		$product_qty = $this->input->post('quantity',TRUE);
+		$product_price = $this->input->post('price',TRUE);
 		
 		$prod_list = array(
 			'id'    => $product_id,
@@ -46,13 +47,17 @@ class Carts extends CI_Controller {
 	}
 	public function purchase_order()
 	{
-		$this->form_validation->set_rules('name','<strong><em>Name</em></strong>','trim|required');
+		//$this->form_validation->set_rules('name','<strong><em>Name</em></strong>','trim|required');
+		$this->form_validation->set_rules('name','Name','required',
+                        array('required' => 'You must provide a %s.')
+                );
         $this->form_validation->set_rules('address','<strong><em>Address</em></strong>','trim|required');
         $this->form_validation->set_rules('card_no','<strong><em>Card No.</em></strong>','trim|required|numeric');
 		if($this->form_validation->run()===FALSE)
         {
             $this->session->set_flashdata('errors_purchase', validation_errors());
-            redirect(base_url());
+			
+            //redirect('/carts/cart');
         }else
         {
            	$cust_id = $this->product_model->bill_info($this->input->post(NULL, TRUE));
@@ -69,10 +74,11 @@ class Carts extends CI_Controller {
 				$order_detail_id = $this->product_model->order_detail($order_detail);
 				echo "Customer ID: " . $cust_id . " - ORDER ID: " . $ord_id . "ORDER DETAIL: " .$order_detail_id;
 			}
-			
+			$this->cart->destroy();
 			$this->session->set_flashdata('success_purchase', "<h3>Your order was placed successfully!</h3>");
             redirect(base_url());
         }
+		$this->load->view('cart');
 
 	}
 }
