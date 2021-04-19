@@ -35,9 +35,6 @@
             </tbody>
             
         </table>
-<?php
-        //var_dump($this->cart->contents());
-?>
         
         <img src="<?=base_url();?>/assets/images/undraw_empty_cart_co35" alt="">
         <?= $this->session->flashdata('success_purchase');?>
